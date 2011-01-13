@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="updateRates">
+        <item>@string/update_rate_1</item>
+        <item>@string/update_rate_2</item>
+        <item>@string/update_rate_3</item>
+        <item>@string/update_rate_4</item>
+        <item>@string/update_rate_5</item>
+    </string-array>
+</resources>

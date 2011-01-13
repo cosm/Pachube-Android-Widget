@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pachube Monitor</string>
+    <string name="feed_id">Feed ID</string>
+    <string name="datastream_id">Datastream ID</string>
+    <string name="username">Pachube username</string>
+    <string name="password">Pachube password</string>
+    <string name="config_rate">Update rate</string>
+    <string name="about_widget">Monitor a single datastream of a Pachube feed (numeric IDs only). Visit www.pachube.com for more information.</string>
+    <string name="spinner_config_rate">Update rate</string>
+    <string name="btn_config_save">Save</string>
+    <string name="btn_config_cancel">Cancel</string>
+    <string name="update_rate_1">10 seconds</string>
+    <string name="update_rate_2">1 minute</string>
+    <string name="update_rate_3">5 minutes</string>
+    <string name="update_rate_4">15 minutes</string>
+    <string name="update_rate_5">1 hour</string>
+    <string name="no_connection">No connection!</string>
+</resources>

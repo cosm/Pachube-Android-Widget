@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    style="@style/WidgetBackground"
+    >
+		<TextView
+			android:id="@+id/feed_title"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:singleLine="true"
+            android:layout_marginTop="22dip"
+            android:layout_marginLeft="20dip"
+            android:textStyle="bold"
+            android:textColor="#666666"
+            android:text=""
+            android:textSize="12dp"
+            android:gravity="center" >
+        </TextView>
+
+		<TextView
+			android:id="@+id/feed_description"
+			android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+			android:singleLine="true"
+    		android:ellipsize="marquee"
+            android:layout_below="@id/feed_title"
+			android:layout_marginLeft="20dip"
+			android:layout_marginRight="20dip"
+            android:textColor="#000000"
+            android:text=""
+            android:textSize="8dp"
+            android:gravity="left" >
+        </TextView>
+        
+		<TextView
+			android:id="@+id/feed_status"
+			android:singleLine="true"
+			android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@id/feed_title"
+            android:layout_alignBaseline="@id/feed_title"
+			android:layout_marginLeft="5dip"
+            android:textStyle="bold"
+			android:textColor="#FFFFFF"
+            android:text=""
+            android:textSize="8dp"
+            android:gravity="center" >
+        </TextView>
+       
+		<TextView
+			android:id="@+id/feed_data_tag"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:singleLine="true"
+			android:layout_below="@id/feed_description"
+            android:layout_marginTop="4dip"
+            android:layout_marginLeft="20dip"
+            android:textStyle="bold"
+            android:textColor="#ff0066"
+            android:text=""
+            android:textSize="12dp"
+            android:gravity="center" >
+        </TextView>
+
+		<TextView
+			android:id="@+id/feed_data_value"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:singleLine="true"
+			android:layout_below="@id/feed_description"
+            android:layout_toRightOf="@id/feed_data_tag"
+            android:layout_marginTop="-7dip"
+            android:layout_marginLeft="5dip"
+             android:textStyle="bold"
+            android:textColor="#999999"
+            android:text=""
+            android:textSize="26dp"
+            android:gravity="center" >
+        </TextView>
+		<TextView
+			android:id="@+id/feed_data_unit"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:singleLine="true"
+ 			android:layout_below="@id/feed_description"
+            android:layout_toRightOf="@id/feed_data_value"
+            android:layout_marginTop="5dip"
+            android:layout_marginLeft="5dip"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:text=""
+            android:textSize="10dp"
+            android:gravity="center" >
+        </TextView>
+</RelativeLayout>

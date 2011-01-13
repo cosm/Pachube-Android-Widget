@@ -1,3 +1,6 @@
+// This code is forked from "Pachube for Android" by Daniele Altomare 'Fasteque' available at http://code.google.com/p/pachube-for-android/
+
+
 package com.pachube.pachubewidget;
 
 import java.io.IOException;

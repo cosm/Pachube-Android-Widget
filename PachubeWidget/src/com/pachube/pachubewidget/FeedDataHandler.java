@@ -58,7 +58,7 @@ public class FeedDataHandler extends DefaultHandler
 		}
 		if(localName.equals("tag"))
 			this.tag = true;
-		if(localName.equals("value"))
+		if(localName.equals("current_value"))
 			this.value = true;
 		if(localName.equals("unit"))
 			this.unit = true;		
@@ -82,7 +82,7 @@ public class FeedDataHandler extends DefaultHandler
 		}
 		if(localName.equals("tag"))
 			this.tag = false;
-		if(localName.equals("value"))
+		if(localName.equals("current_value"))
 			this.value = false;
 		if(localName.equals("unit"))
 			this.unit = false;

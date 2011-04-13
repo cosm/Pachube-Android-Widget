@@ -16,4 +16,5 @@
     <string name="update_rate_4">15 minutes</string>
     <string name="update_rate_5">1 hour</string>
     <string name="no_connection">No connection!</string>
+    <string name="no_datastream_id">No such Datastream!</string>
 </resources>

@@ -61,14 +61,26 @@ public class PachubeWidgetService extends Service
 					if(feed.feedData != null)
 					{
 						int thisDatastream = PachubeWidgetConfig.loadDsIDKeyPref(getApplicationContext(), appWidgetId);
-						remoteView.setTextViewText(R.id.feed_data_tag, feed.feedData.get(thisDatastream).getTag());
-						
-						if(feed.feedData.get(thisDatastream).getValue().equals(""))
-							remoteView.setTextViewText(R.id.feed_data_value, "-");
-						else
-							remoteView.setTextViewText(R.id.feed_data_value, feed.feedData.get(thisDatastream).getValue());
-						
-						remoteView.setTextViewText(R.id.feed_data_unit, feed.feedData.get(thisDatastream).getUnitName());
+
+						int thisDatastreamIndex;
+						for (thisDatastreamIndex = 0; thisDatastreamIndex < feed.feedData.size(); thisDatastreamIndex++)
+							if (feed.feedData.get(thisDatastreamIndex).getId() == thisDatastream)
+								break;
+
+						if (thisDatastreamIndex < feed.feedData.size()) {
+							remoteView.setTextViewText(R.id.feed_data_tag, feed.feedData.get(thisDatastreamIndex).getTag());
+
+							if(feed.feedData.get(thisDatastreamIndex).getValue().equals(""))
+								remoteView.setTextViewText(R.id.feed_data_value, "-");
+							else
+								remoteView.setTextViewText(R.id.feed_data_value, feed.feedData.get(thisDatastreamIndex).getValue());
+
+							remoteView.setTextViewText(R.id.feed_data_unit, feed.feedData.get(thisDatastreamIndex).getUnitName());
+						} else {
+							remoteView.setTextViewText(R.id.feed_title, "ID = " + Integer.toString(thisDatastream));
+
+							remoteView.setTextViewText(R.id.feed_status, getString(R.string.no_datastream_id));
+						}
 					}
 				}
 			}

@@ -24,13 +24,16 @@ public class ParsedFeedData
 	
 	public String getTag()
 	{
-		return tag;
+		return shorten(tag,20);
 	}
 	
 	
 	public void setTag(String tag)
 	{
-		this.tag = shorten(tag,20);
+		if (this.tag.equals(""))
+			this.tag = tag;
+		else
+			this.tag = this.tag + ", " + tag;
 	}
 	
 	

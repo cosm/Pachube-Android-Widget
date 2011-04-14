@@ -13,6 +13,9 @@ import android.net.NetworkInfo;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
+import android.os.Handler;
+import android.os.Message;
+
 public class PachubeWidgetService extends Service
 {
 	public static final String UPDATE = "update";
@@ -24,13 +27,13 @@ public class PachubeWidgetService extends Service
 	{
 		String command = intent.getAction();
 		
-		int appWidgetId = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
+		final int appWidgetId = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
 		
-		RemoteViews remoteView = new RemoteViews(getApplicationContext().getPackageName(), R.layout.pachubewidget_layout);
+		final RemoteViews remoteView = new RemoteViews(getApplicationContext().getPackageName(), R.layout.pachubewidget_layout);
 		
 		
 		
-		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
+		final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
 		
 		//SharedPreferences prefs = getApplicationContext().getSharedPreferences(PREFS_NAME, 0);
 		
@@ -40,59 +43,33 @@ public class PachubeWidgetService extends Service
 		{
 			if(isOnline())
 			{
-				ParsedFeed feed = RestClient.connect("https://api.pachube.com/v2/feeds/" +
+
+				Handler mHandler = new Handler() {
+					int appWidgetId2 = appWidgetId;
+					RemoteViews remoteView2 = remoteView;
+					AppWidgetManager appWidgetManager2 = appWidgetManager;
+					@Override
+					public void handleMessage(Message message) {
+						updateDisplay(appWidgetId2, remoteView2, appWidgetManager2, (ParsedFeed) message.obj);
+					}
+				};
+				Runnable runnable = new RestClientTask(mHandler, "https://api.pachube.com/v2/feeds/" +
 													PachubeWidgetConfig.loadFeedIDKeyPref(getApplicationContext(), appWidgetId) + 
 													".xml", 
 													PachubeWidgetConfig.loadUsernamePref(getApplicationContext(), appWidgetId),PachubeWidgetConfig.loadPasswordPref(getApplicationContext(), appWidgetId));
 				
-				if(feed != null)
-				{
-					remoteView.setTextViewText(R.id.feed_title, feed.getFeedTitle());
-					
-					remoteView.setTextViewText(R.id.feed_description, feed.getFeedDescription());
-					
-					if(feed.getFeedStatus().equals("frozen"))
-						remoteView.setTextColor(R.id.feed_status, 0xFF00a4cb);
-					if(feed.getFeedStatus().equals("live"))
-						remoteView.setTextColor(R.id.feed_status, 0xFF00cb03);
-					remoteView.setTextViewText(R.id.feed_status, feed.getFeedStatus());
-					
-					// TODO : loop all over the data
-					if(feed.feedData != null)
-					{
-						int thisDatastream = PachubeWidgetConfig.loadDsIDKeyPref(getApplicationContext(), appWidgetId);
-
-						int thisDatastreamIndex;
-						for (thisDatastreamIndex = 0; thisDatastreamIndex < feed.feedData.size(); thisDatastreamIndex++)
-							if (feed.feedData.get(thisDatastreamIndex).getId() == thisDatastream)
-								break;
-
-						if (thisDatastreamIndex < feed.feedData.size()) {
-							remoteView.setTextViewText(R.id.feed_data_tag, feed.feedData.get(thisDatastreamIndex).getTag());
-
-							if(feed.feedData.get(thisDatastreamIndex).getValue().equals(""))
-								remoteView.setTextViewText(R.id.feed_data_value, "-");
-							else
-								remoteView.setTextViewText(R.id.feed_data_value, feed.feedData.get(thisDatastreamIndex).getValue());
-
-							remoteView.setTextViewText(R.id.feed_data_unit, feed.feedData.get(thisDatastreamIndex).getUnitName());
-						} else {
-							remoteView.setTextViewText(R.id.feed_title, "ID = " + Integer.toString(thisDatastream));
-
-							remoteView.setTextViewText(R.id.feed_status, getString(R.string.no_datastream_id));
-						}
-					}
-				}
+				Thread thread = new Thread(runnable);
+				thread.start();
 			}
 			else
 			{
 				remoteView.setTextViewText(R.id.feed_title, "Problem loading Pachube feed " + String.valueOf(PachubeWidgetConfig.loadFeedIDKeyPref(getApplicationContext(), appWidgetId)));
 				
 				remoteView.setTextViewText(R.id.feed_status, getString(R.string.no_connection));
+
+				// apply changes to widget
+				appWidgetManager.updateAppWidget(appWidgetId, remoteView);
 			}
-			
-			// apply changes to widget
-			appWidgetManager.updateAppWidget(appWidgetId, remoteView);
 		} 
 		
 		super.onStart(intent, startId);
@@ -120,4 +97,45 @@ public class PachubeWidgetService extends Service
 		return true; 
 	}
 
+	public void updateDisplay(int appWidgetId, RemoteViews remoteView, AppWidgetManager appWidgetManager, ParsedFeed feed) {
+		if(feed != null)
+		{
+			remoteView.setTextViewText(R.id.feed_title, feed.getFeedTitle());
+
+			remoteView.setTextViewText(R.id.feed_description, feed.getFeedDescription());
+
+			if(feed.getFeedStatus().equals("frozen"))
+				remoteView.setTextColor(R.id.feed_status, 0xFF00a4cb);
+			if(feed.getFeedStatus().equals("live"))
+				remoteView.setTextColor(R.id.feed_status, 0xFF00cb03);
+			remoteView.setTextViewText(R.id.feed_status, feed.getFeedStatus());
+
+			// TODO : loop all over the data
+			if(feed.feedData != null)
+			{
+				int thisDatastream = PachubeWidgetConfig.loadDsIDKeyPref(getApplicationContext(), appWidgetId);
+
+				int thisDatastreamIndex;
+				for (thisDatastreamIndex = 0; thisDatastreamIndex < feed.feedData.size(); thisDatastreamIndex++)
+					if (feed.feedData.get(thisDatastreamIndex).getId() == thisDatastream)
+						break;
+
+				if (thisDatastreamIndex < feed.feedData.size()) {
+					remoteView.setTextViewText(R.id.feed_data_tag, feed.feedData.get(thisDatastreamIndex).getTag());
+
+					if(feed.feedData.get(thisDatastreamIndex).getValue().equals(""))
+						remoteView.setTextViewText(R.id.feed_data_value, "-");
+					else
+						remoteView.setTextViewText(R.id.feed_data_value, feed.feedData.get(thisDatastreamIndex).getValue());
+
+					remoteView.setTextViewText(R.id.feed_data_unit, feed.feedData.get(thisDatastreamIndex).getUnitName());
+				} else {
+					remoteView.setTextViewText(R.id.feed_data_value, "id=" + Integer.toString(thisDatastream));
+					remoteView.setTextViewText(R.id.feed_data_tag, getString(R.string.no_datastream_id));
+				}
+			}
+		}
+		// apply changes to widget
+		appWidgetManager.updateAppWidget(appWidgetId, remoteView);
+	}
 }

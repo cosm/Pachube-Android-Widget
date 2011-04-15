@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.os.Bundle;
 
 public class PachubeWidget extends AppWidgetProvider
 {	
@@ -76,9 +77,12 @@ public class PachubeWidget extends AppWidgetProvider
         }
         if (AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action))
         {
-            final int appWidgetId = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID)
+            final int[] appWidgetIds = intent.getExtras().getIntArray(AppWidgetManager.EXTRA_APPWIDGET_IDS);
+            if (appWidgetIds != null)
             {
+                this.onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds);
+            } else {
+                final int appWidgetId = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
                 this.onUpdate(context, AppWidgetManager.getInstance(context), new int[] { appWidgetId });
             }
         }

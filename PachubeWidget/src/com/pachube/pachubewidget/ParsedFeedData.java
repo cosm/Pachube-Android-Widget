@@ -4,19 +4,19 @@ package com.pachube.pachubewidget;
 
 public class ParsedFeedData
 {
-	private int id = -1;
+	private String id = "";
 	private String tag = "";
 	private String value = "";
 	private String unitSymbol = "";
 	private String unitName = "";
 	
-	public int getId()
+	public String getId()
 	{
 		return id;
 	}
 	
 	
-	public void setId(int id)
+	public void setId(String id)
 	{
 		this.id = id;
 	}

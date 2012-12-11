@@ -113,11 +113,11 @@ public class PachubeWidgetService extends Service
 			// TODO : loop all over the data
 			if(feed.feedData != null)
 			{
-				int thisDatastream = PachubeWidgetConfig.loadDsIDKeyPref(getApplicationContext(), appWidgetId);
+				String thisDatastream = PachubeWidgetConfig.loadDsIDKeyPref(getApplicationContext(), appWidgetId);
 
 				int thisDatastreamIndex;
 				for (thisDatastreamIndex = 0; thisDatastreamIndex < feed.feedData.size(); thisDatastreamIndex++)
-					if (feed.feedData.get(thisDatastreamIndex).getId() == thisDatastream)
+					if (feed.feedData.get(thisDatastreamIndex).getId().equals(thisDatastream))
 						break;
 
 				if (thisDatastreamIndex < feed.feedData.size()) {
@@ -130,7 +130,7 @@ public class PachubeWidgetService extends Service
 
 					remoteView.setTextViewText(R.id.feed_data_unit, feed.feedData.get(thisDatastreamIndex).getUnitName());
 				} else {
-					remoteView.setTextViewText(R.id.feed_data_value, "id=" + Integer.toString(thisDatastream));
+					remoteView.setTextViewText(R.id.feed_data_value, "id=" + thisDatastream);
 					remoteView.setTextViewText(R.id.feed_data_tag, getString(R.string.no_datastream_id));
 				}
 			}

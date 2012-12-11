@@ -30,7 +30,7 @@ public class PachubeWidgetConfig extends Activity
 	Spinner cUpdateRate;
 	
 	int feedID = -1;
-	int DsID = -1;
+	String DsID = null;
 	String usernameKey = null;
 	String passwordKey = null;
 	int updateRate = -1;
@@ -115,18 +115,17 @@ public class PachubeWidgetConfig extends Activity
     		try
     		{
     			feedID = Integer.parseInt(cFeedID.getText().toString());
-    			DsID = Integer.parseInt(cDsID.getText().toString());
+    			DsID = cDsID.getText().toString();
         		usernameKey = cUsernameKey.getText().toString();
         		passwordKey = cPasswordKey.getText().toString();
-   		}
+    		}
     		catch(NumberFormatException e)
     		{
     			cFeedID.getText().clear();
-    			cDsID.getText().clear();
     		}
     		
      		    		
-    		if((feedID != -1) && (passwordKey != null) && (usernameKey != null) && (DsID != -1))
+    		if((feedID != -1) && (passwordKey != null) && (usernameKey != null) && (DsID != null))
     		{
 	    		configDone = true;
 	            
@@ -169,11 +168,11 @@ public class PachubeWidgetConfig extends Activity
     };
     
     // Write to the SharedPreferences object for this widget
-    static void savePrefs(Context context, int appWidgetId, int feedID, int DsId, String usernameKey, String passwordKey, int updateRate, boolean configDone)
+    static void savePrefs(Context context, int appWidgetId, int feedID, String DsId, String usernameKey, String passwordKey, int updateRate, boolean configDone)
     {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         prefs.putInt(PREF_FEEDID_KEY + appWidgetId, feedID);
-        prefs.putInt(PREF_DATASTREAMID_KEY + appWidgetId, DsId);
+        prefs.putString(PREF_DATASTREAMID_KEY + appWidgetId, DsId);
         prefs.putString(PREF_PACHUBEUSERNAME_KEY + appWidgetId, usernameKey);
         prefs.putString(PREF_PACHUBEPASSWORD_KEY + appWidgetId, passwordKey);
         prefs.putInt(PREF_UPDATERATE_KEY + appWidgetId, updateRate);
@@ -199,12 +198,10 @@ public class PachubeWidgetConfig extends Activity
         */
     }
     
-    static int loadDsIDKeyPref(Context context, int appWidgetId)
+    static String loadDsIDKeyPref(Context context, int appWidgetId)
     {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        int DsID = prefs.getInt(PREF_DATASTREAMID_KEY + appWidgetId, 0);
-        
-        return DsID;
+        return prefs.getString(PREF_DATASTREAMID_KEY + appWidgetId, "");
      }
     
     static String loadUsernamePref(Context context, int appWidgetId)

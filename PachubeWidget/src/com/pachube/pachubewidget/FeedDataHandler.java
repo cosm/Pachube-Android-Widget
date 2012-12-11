@@ -54,7 +54,7 @@ public class FeedDataHandler extends DefaultHandler
 		{
 			this.data = true;
 			feedData = new ParsedFeedData();
-			feedData.setId(Integer.parseInt(attributes.getValue("id")));
+			feedData.setId(attributes.getValue("id"));
 		}
 		if(localName.equals("tag"))
 			this.tag = true;
@@ -98,7 +98,7 @@ public class FeedDataHandler extends DefaultHandler
 			feed.setFeedDescription(new String(ch, start, length));
 		if(this.status)
 			feed.setFeedStatus(new String(ch, start, length));
-		if(this.tag)
+		if(this.data && this.tag)
 			feedData.setTag(new String(ch, start, length));
 		if(this.value)
 			feedData.setValue(new String(ch, start, length));
